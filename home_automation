@@ -1,0 +1,55 @@
+#include<SoftwareSerial.h>
+SoftwareSerial myserial(5,6);   // HC05-rx=6,tx=5
+// configure two pins
+int light_one = 12;
+int light_two = 8;
+void setup() {
+  // put your setup code here, to run once:
+  //Starting the bluetooth and Serial for Communication
+myserial.begin(9600);
+Serial.println(9600);
+// Configure the pins to output
+pinMode(light_one,OUTPUT);
+pinMode(light_two,OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  //declare the char to read the ASCII code
+ char ch; 
+ while(myserial.available()) // When any data is available then enter the loop
+ {
+  //reading the data from the HC05
+  ch=myserial.read();
+  //printing the data on the Serial Monitor
+  Serial.println(ch);
+  if(ch=='1')
+  {
+    // if we read ASCII '1' then turn on LED_1
+    digitalWrite(light_one,HIGH);
+    Serial.println("Bulb One is On");
+  }
+  else if(ch=='2')
+  {
+    digitalWrite(light_one,LOW);
+    // if we read ASACII '2' then turn the BULB_1 off
+    Serial.println("Bulb One is Off");
+  }
+  else if(ch=='3')
+  {
+    digitalWrite(light_two,HIGH);
+    // when it reads ASCII 3 then it will turn on the Bulb 2 on
+    Serial.println("Bulb Two is On");
+  }
+  else if(ch=='4')
+  {
+     digitalWrite(light_two,LOW);
+     //when reads ASCII '4' then it turns off the bulb_2 off 
+     Serial.println("Bulb Two is Off");
+  }
+  else
+  {
+    Serial.println("No operation performed");
+  }
+ }
+}
